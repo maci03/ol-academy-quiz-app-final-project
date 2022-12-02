@@ -1,4 +1,8 @@
 import { useEffect, useState } from "react"
+import { Link } from 'react-router-dom'
+import BooleanQuestion from "../components/BooleanQuestion/BooleanQuestion";
+import MultipleQuestion from "../components/MultipleQuestion/MultipleQuestion";
+import SingleQuestion from "../components/SingleQuestion/SingleQuestion";
 const URL = "http://my-json-server.typicode.com/DanielBarbakadze/Advanced-JS-and-React-Basics/db"
 
 function getWithExpiry() {
@@ -68,13 +72,16 @@ const Quiz = () => {
       })
   }, [])
 
-  const renderedQuestions = questions.map(question => <div key={question.id}>{question.question}</div>)
+  const renderedQuestion = questions[currentQuestionIdx]
 
   return (
     <div>
-      {renderedQuestions}
+      {renderedQuestion?.type === 'single' && <SingleQuestion question={renderedQuestion} />}
+      {renderedQuestion?.type === 'multiple' && <MultipleQuestion question={renderedQuestion} />}
+      {renderedQuestion?.type === 'boolean' && <BooleanQuestion question={renderedQuestion} />}
+      {currentQuestionIdx < 2 ? <button onClick={() => setCurrentQuestionIdx((prevState) => prevState + 1)}>Next</button> : <button><Link to='/finish'>Finish</Link></button>}
     </div>
   )
 }
 
-export default Quiz
+export default Quiz;
