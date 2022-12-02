@@ -9,19 +9,23 @@ function getWithExpiry() {
   };
 
   const now = new Date();
-
-  // { data: "", expiry: ""}
-
   const savedQuiz = JSON.parse(savedQuizStr);
-
   if (now.getTime() > savedQuiz.expiry) {
     localStorage.removeItem('fetchedQuiz');
     return null;
   } else {
-    console.log('quiz exists', savedQuiz);
     return savedQuiz;
   }
 };
+
+function setWithExpiry(value, data, time) {
+  const now = new Date();
+  const savedData = {
+    data,
+    expireDate: now + time
+  }
+  localStorage.setItem(value, JSON.stringify(savedData))
+}
 
 const fetchQuestions = async (url) => {
   try {
@@ -50,21 +54,26 @@ const Quiz = () => {
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
 
   useEffect(() => {
-    // const savedData = getWithExpiry();
+    const savedData = getWithExpiry();
 
-    // if (savedData) {
-    //   setQuestions(savedData);
-    //   return;
-    // }
+    if (savedData) {
+      setQuestions(savedData.data);
+      return;
+    }
 
     fetchQuestions(URL)
       .then(res => {
-        console.log('desired data', res)
+        setWithExpiry('fetchedQuiz', res, 600000);
+        setQuestions(res)
       })
   }, [])
 
+  const renderedQuestions = questions.map(question => <div key={question.id}>{question.question}</div>)
+
   return (
-    <div>Quiz page</div>
+    <div>
+      {renderedQuestions}
+    </div>
   )
 }
 
