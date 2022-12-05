@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import BooleanQuestion from "../components/BooleanQuestion/BooleanQuestion";
 import MultipleQuestion from "../components/MultipleQuestion/MultipleQuestion";
 import SingleQuestion from "../components/SingleQuestion/SingleQuestion";
+import { SButton, SQuiz } from "../components/styled/StyledComponents.styled";
 const URL = "http://my-json-server.typicode.com/DanielBarbakadze/Advanced-JS-and-React-Basics/db"
 
 function getWithExpiry() {
@@ -74,13 +75,15 @@ const Quiz = () => {
 
   const renderedQuestion = questions[currentQuestionIdx]
 
+  console.log(questions)
+
   return (
-    <div>
+    <SQuiz>
       {renderedQuestion?.type === 'single' && <SingleQuestion question={renderedQuestion} />}
       {renderedQuestion?.type === 'multiple' && <MultipleQuestion question={renderedQuestion} />}
       {renderedQuestion?.type === 'boolean' && <BooleanQuestion question={renderedQuestion} />}
-      {currentQuestionIdx < 2 ? <button onClick={() => setCurrentQuestionIdx((prevState) => prevState + 1)}>Next</button> : <button><Link to='/finish'>Finish</Link></button>}
-    </div>
+      {currentQuestionIdx < 2 ? <SButton onClick={() => setCurrentQuestionIdx((prevState) => prevState + 1)}>Next</SButton> : <SButton><Link to='/finish'>Finish</Link></SButton>}
+    </SQuiz>
   )
 }
 
