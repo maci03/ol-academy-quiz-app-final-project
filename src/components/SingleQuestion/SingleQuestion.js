@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Answer, Answers, Question, SSingleQuestion } from "./SingleQuestion.styled";
+import { Answer, Answers, Question, SSingleQuestion } from "./SSingleQuestion.styled";
 
 const SingleQuestion = (props) => {
     const [answered, setAnswered] = useState(false);
